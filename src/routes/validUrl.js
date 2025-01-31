@@ -2,9 +2,10 @@ const Validator = require("../models/Validator");
 async function valid(fastify, options) {
   fastify.get("/valid", async (request, reply) => {
     // Validação de URLs
-    const requestedUrl = request.query.url; // Limita a URL a 100 caracteres
+    const requestedUrl = request.query.url; // URL fornecida pelo cliente
     const replyTime = reply.elapsedTime.toFixed(3); // Tempo de resposta em milissegundos limitado a 3 casas decimais
 
+    // Verifica se a URL não foi fornecida
     if (!requestedUrl) {
       return reply.status(400).send({
         timeElapsed: replyTime,
@@ -12,8 +13,11 @@ async function valid(fastify, options) {
       });
     }
 
+    // Valida se a URL fornecida é permitida
     const isValid = Validator.isAllowedDomain(requestedUrl);
-    return { timeElapsed: replyTime, url: requestedUrl, isValid }; // Retorna se e a URL é válida ou não
+
+    // Retorna se a URL é válida ou não
+    return { timeElapsed: replyTime, url: requestedUrl, isValid };
   });
 }
 

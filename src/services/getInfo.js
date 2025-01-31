@@ -2,6 +2,7 @@ const youtubedl = require("youtube-dl-exec");
 
 async function get(URL) {
   try {
+    // Obtém os metadados do vídeo usando youtube-dl-exec
     const output = await youtubedl(URL, {
       dumpSingleJson: true,
       noCheckCertificates: true,
@@ -10,6 +11,7 @@ async function get(URL) {
       addHeader: ["referer:youtube.com", "user-agent:googlebot"],
     });
 
+    // Estrutura os dados de saída
     const data = [
       {
         video: {
@@ -85,6 +87,7 @@ async function get(URL) {
 
     return data;
   } catch (err) {
+    // Lança um erro caso algo dê errado
     throw new Error(err.message || "Something went wrong");
   }
 }
